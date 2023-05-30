@@ -4,22 +4,39 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Contacto extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
+    
     static associate(models) {
-      // define association here
+      Contacto.belongsTo(models.Usuario, {
+        foreignKey: "id_usuario",
+      });
     }
   }
-  Contacto.init({
-    id_usuario: DataTypes.INTEGER,
-    nombre: DataTypes.STRING,
-    email: DataTypes.STRING
+  Contacto.init(
+    {
+    id_usuario: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    nombre: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        is:/^[a-zA-Z]+(([',.-][a-zA-Z ])?[a-zA-Z]*)*$/,
+      },
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique:true,
+      validate: {
+        isEmail: true,
+        isLowercase: true,
+      },
+    },
   }, {
     sequelize,
     modelName: 'Contacto',
+    tableName: "contactos"
   });
   return Contacto;
 };
