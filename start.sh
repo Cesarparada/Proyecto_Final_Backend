@@ -10,7 +10,7 @@ sequelize model:generate --name Nacionalidad --attributes 'nombre_nacion:string'
 
 
 # crear modelo Direccion
-sequelize model:generate --name Direccion --attributes 'calle:string,numero:integer'
+sequelize model:generate --name Role --attributes 'role_usuario:string'
 
 # crear modelo Categoria
 sequelize model:generate --name Categoria --attributes 'nombre_categoria:string'
