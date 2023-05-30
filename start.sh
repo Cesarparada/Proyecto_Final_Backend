@@ -3,23 +3,21 @@
 # crear base de datos
 sequelize db:create
 
-# crear modelo Nacionalidad
-sequelize model:generate --name Nacionalidad --attributes 'nombre_nacion:string'
-
-
-
-
-# crear modelo Direccion
+# crear modelo roles
 sequelize model:generate --name Role --attributes 'role_usuario:string'
-
-# crear modelo Categoria
-sequelize model:generate --name Categoria --attributes 'nombre_categoria:string'
-
-# crear modelo Alumno
+# crear modelo contacto
+sequelize model:generate --name Contacto --attributes 'id_usuario:integer,nombre:string,email:string'
+# crear modelo proyecto
+sequelize model:generate --name Proyecto --attributes 'titulo:string,descripcion:string'
+# crear modelo usuario
 sequelize model:generate --name Usuario --attributes 'id_role:integer,nombre:string,apellidos:string,fecha_de_nacimiento:date,email:string,password:string'
+# crear modelo lista
+sequelize model:generate --name Lista --attributes 'titulo:string,descripcion:string,tarea:string'
+# crear modelo usuarios_proyectos
+sequelize model:generate --name Usuario_Proyecto --attributes 'id_usuario:integer,id_proyecto:integer'
+# crear modelo usuarios_tareas_proyecto
+sequelize model:generate --name Tarea_Proyecto --attributes 'id_lista:integer,id_usuario:integer,id_proyecto:integer'
 
-# crear modelo Curso
-sequelize model:generate --name Curso --attributes 'nombre_curso:string,id_categoria:integer'
 
 ###########################################################
 
