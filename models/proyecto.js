@@ -4,13 +4,15 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Proyecto extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
+   
     static associate(models) {
-      // define association here
+      Proyecto.hasMany(models.Usuario_Proyecto,{
+        foreignKey: "id_proyecto",
+      });
+      Proyecto.hasMany(models.Tarea_Proyecto,{
+        foreignKey: "id_proyecto",
+      });
+
     }
   }
   Proyecto.init({
@@ -19,6 +21,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Proyecto',
+    tableName: 'proyectos',
   });
   return Proyecto;
 };

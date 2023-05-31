@@ -23,7 +23,7 @@ sequelize model:generate --name Tarea_Proyecto --attributes 'id_lista:integer,id
 
 # ejecutar migracion
 sequelize db:migrate 
-sequelize db:migrate  --to 03-create-alumno.js
+sequelize db:migrate  --to role.js
 
 # revertir la migracion
 sequelize db:migrate:undo
