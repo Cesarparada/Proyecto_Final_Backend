@@ -31,9 +31,13 @@ sequelize db:migrate:undo:all
 sequelize db:migrate:undo:all --to 03-create-alumno.js
 
 # crear seed
-sequelize seed:generate --name seed-citas
-sequelize seed:generate --name seed-direccion
-sequelize seed:generate --name seed-odontologo
+sequelize seed:generate --name seed-role
+sequelize seed:generate --name seed-proyecto
+sequelize seed:generate --name seed-lista
+sequelize seed:generate --name seed-usuario
+sequelize seed:generate --name seed-contacto
+sequelize seed:generate --name seed-tarea_proyecto
+sequelize seed:generate --name seed-usuario_proyecto
 
 # ejecutar seed
 sequelize db:seed:all
