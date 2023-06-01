@@ -11,7 +11,7 @@ const verifyToken = (req, res, next) => {
     const decoded = decodedToken(token);
     console.log(decoded)
     req.id_usuario = decoded.id_usuario;
-    req.role_usuario = decoded.role_usuario;
+    req.usuario_role = decoded.usuario_role;
     next();
   } catch (error) {
     sendErrorResponse(res, 400, "Token invalido", error);

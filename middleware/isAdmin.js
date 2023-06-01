@@ -1,7 +1,7 @@
 const { sendErrorResponse } = require("../_util/sendResponse");
-const isAdmin = (req, res, next) => {
-  const { role_usuario } = req;
-  if (role_usuario != "admin") {
+const isAdmin = async (req, res, next) => {
+  const { usuario_role } = req;
+  if (usuario_role != "admin") {
     return sendErrorResponse(res, 403, "No tiene los permisos necesarios");
   } else next();
 };
