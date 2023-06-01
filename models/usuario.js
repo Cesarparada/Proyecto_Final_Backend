@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
       Usuario.hasMany(models.Contacto,{
         foreignKey: "id_usuario",
       });
-      Usuario.hasMany(models.Tarea_Proyectos,{
+      Usuario.hasMany(models.Tarea_Proyecto,{
         foreignKey: "id_usuario",
       });
       Usuario.hasMany(models.Usuario_Proyecto,{
