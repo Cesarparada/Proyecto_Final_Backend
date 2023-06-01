@@ -12,4 +12,7 @@ router.get("/", verifyToken, isAdmin, userController.getAllUser);
 // visualizar el perfil de usuario
 router.get("/getprofile", verifyToken, userController.getProfile);
 
+//modificar usuario
+router.put("/updateprofile", verifyToken, userController.updateProfile);
+
 module.exports = router;

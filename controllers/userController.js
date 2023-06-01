@@ -44,4 +44,34 @@ userController.getProfile = async (req, res) =>{
     }
    };
 
+   
+//modificar un perfil
+userController.updateProfile = async (req, res) => {
+    try {
+      const id_usuario = req.usuario_id;
+      let newPassword;
+      if (req.body.password) {
+        newPassword = hash(req.body.password);
+      }
+      const updateProfile = await Usuario.update(
+        {
+          ...req.body,
+          password: newPassword,
+          id_rol: 1,
+        },
+        { where: { id: id_usuario } }
+      );
+      if (updateProfile == 1) {
+        return sendSuccsessResponse(res, 200, {
+          success: true,
+          message: "Usuario modificado",
+        });
+      } else {
+        return sendErrorResponse(res, 400, "Usuario no encontrado");
+      }
+    } catch (error) {
+      return sendErrorResponse(res, 500, "Error al actualizar el perfil", error);
+    }
+  };
+
 module.exports = userController;
