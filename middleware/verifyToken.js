@@ -10,7 +10,7 @@ const verifyToken = (req, res, next) => {
   try {
     const decoded = decodedToken(token);
     console.log(decoded)
-    req.id_usuario = decoded.id_usuario;
+    req.usuario_id = decoded.usuario_id;
     req.usuario_role = decoded.usuario_role;
     next();
   } catch (error) {

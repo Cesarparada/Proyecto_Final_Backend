@@ -9,4 +9,7 @@ const isAdmin = require("../middleware/isAdmin");
 //obtener todos los usuarios
 router.get("/", verifyToken, isAdmin, userController.getAllUser);
 
+// visualizar el perfil de usuario
+router.get("/getprofile", verifyToken, userController.getProfile);
+
 module.exports = router;

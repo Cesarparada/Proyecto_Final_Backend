@@ -33,4 +33,15 @@ userController.getAllUser = async (req, res) => {
   }
 };
 
+//ver los perfiles de usuarios
+userController.getProfile = async (req, res) =>{
+    try {
+      const {usuario_id} = req
+     const profile = await Usuario.findOne({where : {id : usuario_id}, attributes: {exclude:["password","createdAt","updatedAt","id_role"]}})
+     sendSuccsessResponse(res, 200, profile)
+    } catch (error) {
+     sendErrorResponse(res, 404, "Id no existente", error)
+    }
+   };
+
 module.exports = userController;
