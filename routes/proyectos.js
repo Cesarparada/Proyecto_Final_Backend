@@ -7,4 +7,7 @@ const proyectoController = require("../controllers/proyectoControllers")
 //ver citas como cliente
 router.get("/proyecto", verifyToken, isUser, proyectoController.getProyectos);
 
+
+router.put("/updateproyectos/:id", verifyToken, isUser, proyectoController.updateProyecto);
+
 module.exports = router;
