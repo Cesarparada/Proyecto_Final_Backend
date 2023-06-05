@@ -13,4 +13,7 @@ router.get("/proyecto", verifyToken, isUser, proyectoController.getProyectos);
 //modificar proyectos
 router.put("/updateproyectos/:id", verifyToken, isUser, proyectoController.updateProyecto);
 
+//eliminar proyectos
+router.delete("/deleteproyectos/:id", verifyToken, isUser, proyectoController.deleteProyecto);
+
 module.exports = router;

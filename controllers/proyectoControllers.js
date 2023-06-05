@@ -1,5 +1,11 @@
 const proyectoController = {};
-const { Usuario, Proyecto, Usuario_Proyecto } = require("../models");
+const {
+  Usuario,
+  Proyecto,
+  Usuario_Proyecto,
+  Tarea_Proyecto,
+  Lista,
+} = require("../models");
 const {
   sendSuccsessResponse,
   sendErrorResponse,
@@ -11,23 +17,22 @@ proyectoController.createProyecto = async (req, res) => {
     const usuario = await Usuario.findOne({
       where: { id: req.usuario_id },
     });
-    const { titulo, descripcion, id_usuario } = req.body;
+    const { titulo, descripcion } = req.body;
     const nuevoProyecto = await Proyecto.create({
-      id_usuario: id_usuario,
-      usuario: usuario.id,
       titulo: titulo,
       descripcion: descripcion,
-      createdAt: new Date(),  
+      createdAt: new Date(),
       updatedAt: new Date(),
     });
-    const usuraio = await Usuario.findByPk(nuevoProyecto.id_usuario,{
-      include:{
-        model: Usuario_Proyecto,
-      }
-    })
+    const usuario_proyecto = await Usuario_Proyecto.create({
+      id_proyecto: nuevoProyecto.id,
+      id_usuario: usuario.id,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+
     return sendSuccsessResponse(res, 200, {
       message: "Proyecto creado",
-      usuario,
       nuevoProyecto,
     });
   } catch (error) {
@@ -72,23 +77,36 @@ proyectoController.updateProyecto = async (req, res) => {
     const usuario = await Usuario.findOne({
       where: { id: req.usuario_id },
     });
+
     const id_proyecto = req.params.id;
     const titulo = req.body.titulo;
     const descripcion = req.body.descripcion;
-    const updateProyecto = await Proyecto.update(
-      { titulo: titulo, descripcion: descripcion },
-      { where: { id: id_proyecto } }
-    );
-    if (updateProyecto == 1) {
-      return sendSuccsessResponse(res, 200, {
-        message: "proyecto modificado",
-        updateProyecto,
-      });
+
+    const tarea_proyecto = await Tarea_Proyecto.findOne({
+      where: { id_usuario: usuario.id, id_proyecto: id_proyecto },
+    });
+    if (tarea_proyecto) {
+      const updateProyecto = await Proyecto.update(
+        { titulo: titulo, descripcion: descripcion },
+        { where: { id: id_proyecto } }
+      );
+      if (updateProyecto == 1) {
+        return sendSuccsessResponse(res, 200, {
+          message: "proyecto modificado",
+          updateProyecto,
+        });
+      } else {
+        return sendErrorResponse(
+          res,
+          404,
+          "Debe completar correctamente los campos requeridos"
+        );
+      }
     } else {
       return sendErrorResponse(
         res,
-        404,
-        "Debe completar correctamente los campos requeridos"
+        403,
+        "No tienes los permisos para modificar"
       );
     }
   } catch (error) {
@@ -101,4 +119,56 @@ proyectoController.updateProyecto = async (req, res) => {
   }
 };
 
+//Eliminar proyectos como usuario
+
+proyectoController.deleteProyecto = async (req, res) => {
+  try {
+    const usuario = await Usuario.findOne({
+      where: { id: req.usuario_id },
+    });
+    const id_usuario = usuario.id;
+    const id_proyecto = req.params.id;
+
+    const tarea_proyecto = await Tarea_Proyecto.findOne({
+      where: { id_usuario: id_usuario, id_proyecto: id_proyecto },
+    });
+    console.log(tarea_proyecto);
+    if (tarea_proyecto) {
+      // const deleteTareaProyecto =
+      await Tarea_Proyecto.destroy({
+        where: { id_proyecto: id_proyecto, id_usuario: id_usuario },
+      });
+      // const deleteUsuarioProyecto =
+      await Usuario_Proyecto.destroy({
+        where: { id_proyecto: id_proyecto },
+      });
+      // const deleteLista =
+      await Lista.destroy({
+        where: { id: tarea_proyecto.id },
+      });
+      // const deleteProyecto =
+      await Proyecto.destroy({
+        where: { id: id_proyecto },
+      });
+
+      return sendSuccsessResponse(res, 200, {
+        message: "Proyecto eliminado",
+      });
+    } else {
+      sendErrorResponse(
+        res,
+        400,
+        `No se puede eliminar el proyecto, No tienes el permiso necesario`,
+        tarea_proyecto
+      );
+    }
+  } catch (error) {
+    return sendErrorResponse(
+      res,
+      500,
+      "No se puede eliminar el proyecto",
+      error
+    );
+  }
+};
 module.exports = proyectoController;
