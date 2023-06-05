@@ -120,7 +120,6 @@ proyectoController.updateProyecto = async (req, res) => {
 };
 
 //Eliminar proyectos como usuario
-
 proyectoController.deleteProyecto = async (req, res) => {
   try {
     const usuario = await Usuario.findOne({
@@ -130,30 +129,33 @@ proyectoController.deleteProyecto = async (req, res) => {
     const id_proyecto = req.params.id;
 
     const tarea_proyecto = await Tarea_Proyecto.findOne({
-      where: { id_usuario: id_usuario, id_proyecto: id_proyecto },
+      where: { id_proyecto: id_proyecto, id_usuario: id_usuario },
     });
-    console.log(tarea_proyecto);
+
     if (tarea_proyecto) {
-      // const deleteTareaProyecto =
-      await Tarea_Proyecto.destroy({
+      const deleteTareaProyecto = await Tarea_Proyecto.destroy({
         where: { id_proyecto: id_proyecto, id_usuario: id_usuario },
       });
-      // const deleteUsuarioProyecto =
-      await Usuario_Proyecto.destroy({
-        where: { id_proyecto: id_proyecto },
-      });
-      // const deleteLista =
-      await Lista.destroy({
-        where: { id: tarea_proyecto.id },
-      });
-      // const deleteProyecto =
-      await Proyecto.destroy({
-        where: { id: id_proyecto },
-      });
 
-      return sendSuccsessResponse(res, 200, {
-        message: "Proyecto eliminado",
-      });
+      if (deleteTareaProyecto == 1) {
+        await Tarea_Proyecto.destroy({
+          where: { id_proyecto: id_proyecto },
+        });
+
+        const deleteUsuarioProyecto = await Usuario_Proyecto.destroy({
+          where: { id_proyecto: id_proyecto },
+        });
+
+        const deleteProyecto = await Proyecto.destroy({
+          where: { id: id_proyecto },
+        });
+        const deleteLista = await Lista.destroy({
+          where: { id: tarea_proyecto.id },
+        });
+        return sendSuccsessResponse(res, 200, {
+          message: "Proyecto eliminado",
+        });
+      }
     } else {
       sendErrorResponse(
         res,
