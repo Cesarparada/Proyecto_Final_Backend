@@ -5,6 +5,36 @@ const {
   sendErrorResponse,
 } = require("../_util/sendResponse");
 
+// crear proyectos como usuario
+proyectoController.createProyecto = async (req, res) => {
+  try {
+    const usuario = await Usuario.findOne({
+      where: { id: req.usuario_id },
+    });
+    const { titulo, descripcion, id_usuario } = req.body;
+    const nuevoProyecto = await Proyecto.create({
+      id_usuario: id_usuario,
+      usuario: usuario.id,
+      titulo: titulo,
+      descripcion: descripcion,
+      createdAt: new Date(),  
+      updatedAt: new Date(),
+    });
+    const usuraio = await Usuario.findByPk(nuevoProyecto.id_usuario,{
+      include:{
+        model: Usuario_Proyecto,
+      }
+    })
+    return sendSuccsessResponse(res, 200, {
+      message: "Proyecto creado",
+      usuario,
+      nuevoProyecto,
+    });
+  } catch (error) {
+    return sendErrorResponse(res, 500, "No se puede crear el proyecto", error);
+  }
+};
+
 // ver proyectos como usuario
 proyectoController.getProyectos = async (req, res) => {
   try {
@@ -70,4 +100,5 @@ proyectoController.updateProyecto = async (req, res) => {
     );
   }
 };
+
 module.exports = proyectoController;
