@@ -1,6 +1,15 @@
 const proyectoController = {};
-const {Usuario, Proyecto, Usuario_Proyecto, Tarea_Proyecto, Lista} = require("../models");
-const {sendSuccsessResponse, sendErrorResponse} = require("../_util/sendResponse");
+const {
+  Usuario,
+  Proyecto,
+  Usuario_Proyecto,
+  Tarea_Proyecto,
+  Lista,
+} = require("../models");
+const {
+  sendSuccsessResponse,
+  sendErrorResponse,
+} = require("../_util/sendResponse");
 
 // crear proyectos como usuario
 proyectoController.createProyecto = async (req, res) => {

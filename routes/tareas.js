@@ -10,4 +10,7 @@ router.get("/tarea", verifyToken, isUser, tareaController.getTareas);
 //Crear tareas
 router.post("/cratetarea/:id", verifyToken, isUser, tareaController.createTarea);
 
+//modificar tareas
+router.put("/updatetareas/:id", verifyToken, isUser, tareaController.updateTarea);
+
 module.exports = router
