@@ -13,4 +13,7 @@ router.post("/cratetarea/:id", verifyToken, isUser, tareaController.createTarea)
 //modificar tareas
 router.put("/updatetareas/:id", verifyToken, isUser, tareaController.updateTarea);
 
+//eliminar tareas
+router.delete("/deletetareas/:id", verifyToken, isUser, tareaController.deleteTarea);
+
 module.exports = router

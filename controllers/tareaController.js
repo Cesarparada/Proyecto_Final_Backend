@@ -109,4 +109,49 @@ tareaController.updateTarea = async (req, res) => {
     return sendErrorResponse(res, 500, "No se puedo modificar la tarea", error);
   }
 };
+
+//Eliminar proyectos como usuario
+tareaController.deleteTarea = async (req, res) => {
+    try {
+      const usuario = await Usuario.findOne({
+        where: { id: req.usuario_id },
+      });
+
+      const id_usuario = usuario.id;
+      const id_lista = req.params.id;
+  
+      const tarea_proyecto = await Tarea_Proyecto.findOne({
+        where: { id_lista: id_lista, id_usuario: id_usuario },
+      });
+  
+      if (tarea_proyecto) {
+        const deleteTareaProyecto = await Tarea_Proyecto.destroy({
+          where: { id_lista: id_lista, id_usuario: id_usuario },
+        });
+  
+        if (deleteTareaProyecto == 1) {
+          const deleteProyecto = await Lista.destroy({
+            where: { id: id_lista },
+          });
+          return sendSuccsessResponse(res, 200, {
+            message: "Listas eliminada",
+          });
+        }
+      } else {
+        sendErrorResponse(
+          res,
+          400,
+          `No se puede eliminar la lista, No tienes el permiso necesario`,
+          tarea_proyecto
+        );
+      }
+    } catch (error) {
+      return sendErrorResponse(
+        res,
+        500,
+        "No se puede eliminar la lista",
+        error
+      );
+    }
+  };
 module.exports = tareaController;
