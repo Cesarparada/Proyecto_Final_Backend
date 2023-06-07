@@ -6,6 +6,8 @@ module.exports = {
     await queryInterface.bulkInsert('listas', 
     [
       {
+        id_creador:1,
+        id_contacto: 1,
        titulo: 'Puntos para la investigación',
        descripcion:"Puntos que seguir para realizar ",
        tarea:"Escoger un tema, Sacar los puntos relevantes, Desarrollar los puntos",
@@ -13,6 +15,8 @@ module.exports = {
        updatedAt: new Date(),
      },
       {
+        id_creador:2,
+        id_contacto:2,
        titulo: 'Lista de compra',
        descripcion:"Los productos que necesitamos para la fiesta",
        tarea:"Bebidas, Comidas, Chuces, globos, Cubiertos, Música",
@@ -20,6 +24,8 @@ module.exports = {
        updatedAt: new Date(),
      },
       {
+        id_creador:3,
+        id_contacto:3,
        titulo: 'Requerimientos',
        descripcion:"Requerimientos para el proyecto final",
        tarea:"Introducción, Desarrollo del tema, Resaltar puntos importantes, Conclusión, Referncias",
@@ -27,6 +33,8 @@ module.exports = {
        updatedAt: new Date(),
      },
       {
+        id_creador:4,
+        id_contacto:3,
        titulo: 'Lo necesario para el blog',
        descripcion:"Ideas y pasos para hacer mi nuevo blog",
        tarea:"Elegir tematicas, Buscar posibles titulos, Tomar fotos, Escribir, Referncias",
@@ -34,6 +42,8 @@ module.exports = {
        updatedAt: new Date(),
      },
       {
+        id_creador:5,
+        id_contacto:4,
        titulo: 'Entrega deldomingo',
        descripcion:"requisitos que debo tner para la entrega",
        tarea:"Titulos, Tomar fotos, Escribir, Referncias",
