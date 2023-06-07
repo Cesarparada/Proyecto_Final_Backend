@@ -82,10 +82,10 @@ proyectoController.updateProyecto = async (req, res) => {
     const titulo = req.body.titulo;
     const descripcion = req.body.descripcion;
 
-    const tarea_proyecto = await Tarea_Proyecto.findOne({
+    const usuario_proyecto = await Usuario_Proyecto.findOne({
       where: { id_usuario: usuario.id, id_proyecto: id_proyecto },
     });
-    if (tarea_proyecto) {
+    if (usuario_proyecto) {
       const updateProyecto = await Proyecto.update(
         { titulo: titulo, descripcion: descripcion },
         { where: { id: id_proyecto } }
@@ -131,8 +131,11 @@ proyectoController.deleteProyecto = async (req, res) => {
     const tarea_proyecto = await Tarea_Proyecto.findOne({
       where: { id_proyecto: id_proyecto, id_usuario: id_usuario },
     });
+    const usuario_proyecto = await Usuario_Proyecto.findOne({
+      where: { id_proyecto: id_proyecto, id_usuario: id_usuario },
+    });
 
-    if (tarea_proyecto) {
+    if (tarea_proyecto && usuario_proyecto) {
       const deleteTareaProyecto = await Tarea_Proyecto.destroy({
         where: { id_proyecto: id_proyecto, id_usuario: id_usuario },
       });
@@ -156,11 +159,23 @@ proyectoController.deleteProyecto = async (req, res) => {
           message: "Proyecto eliminado",
         });
       }
+    } else if (!tarea_proyecto && usuario_proyecto) {
+      const deleteUsuarioProyecto = await Usuario_Proyecto.destroy({
+        where: { id_proyecto: id_proyecto },
+      });
+
+      const deleteProyecto = await Proyecto.destroy({
+        where: { id: id_proyecto },
+      });
+
+      return sendSuccsessResponse(res, 200, {
+        message: "Proyecto eliminado",
+      });
     } else {
       sendErrorResponse(
         res,
         400,
-        `No se puede eliminar el proyecto, No tienes el permiso necesario`,
+        `No se puede eliminar el proyecto, no tienes los permisos necesarios`,
         tarea_proyecto
       );
     }

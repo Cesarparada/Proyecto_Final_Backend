@@ -1,5 +1,10 @@
 const tareaController = {};
-const { Usuario, Tarea_Proyecto, Lista } = require("../models");
+const {
+  Usuario,
+  Tarea_Proyecto,
+  Lista,
+  Usuario_Proyecto,
+} = require("../models");
 const {
   sendSuccsessResponse,
   sendErrorResponse,
@@ -11,27 +16,36 @@ tareaController.createTarea = async (req, res) => {
     const usuario = await Usuario.findOne({
       where: { id: req.usuario_id },
     });
-    const { titulo, descripcion, tarea } = req.body;
-    const nuevaTarea = await Lista.create({
-      titulo: titulo,
-      descripcion: descripcion,
-      tarea: tarea,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    });
-    const id_proyecto = req.params.id;
-    const tarea_proyecto = await Tarea_Proyecto.create({
-      id_lista: nuevaTarea.id,
-      id_usuario: usuario.id,
-      id_proyecto: id_proyecto,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    });
 
-    return sendSuccsessResponse(res, 200, {
-      message: "tarea creada",
-      nuevaTarea,
+    const id_proyecto = req.params.id;
+    const usarioProyecto = await Usuario_Proyecto.findOne({
+      where: { id_usuario: usuario.id, id_proyecto: id_proyecto },
     });
+    if (usarioProyecto) {
+      const { titulo, descripcion, tarea, id_contacto } = req.body;
+      const nuevaTarea = await Lista.create({
+        where: { id: usuario.id, id_proyecto: id_proyecto },
+        id_creador: usuario.id,
+        id_contacto: id_contacto,
+        titulo: titulo,
+        descripcion: descripcion,
+        tarea: tarea,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+
+      const tarea_proyecto = await Tarea_Proyecto.create({
+        id_lista: nuevaTarea.id,
+        id_usuario: usuario.id,
+        id_proyecto: id_proyecto,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+
+      return sendSuccsessResponse(res, 200, { message: "tarea creada" });
+    } else {
+      return sendErrorResponse(res, 403, "No tiene los permisos necesario");
+    }
   } catch (error) {
     return sendErrorResponse(res, 500, "No se puede crear la tarea", error);
   }
@@ -89,7 +103,6 @@ tareaController.updateTarea = async (req, res) => {
       if (updateLista == 1) {
         return sendSuccsessResponse(res, 200, {
           message: "Lista modificado",
-         
         });
       } else {
         return sendErrorResponse(
@@ -110,48 +123,43 @@ tareaController.updateTarea = async (req, res) => {
   }
 };
 
-//Eliminar proyectos como usuario
+//Eliminar tarea como usuario
 tareaController.deleteTarea = async (req, res) => {
-    try {
-      const usuario = await Usuario.findOne({
-        where: { id: req.usuario_id },
-      });
+  try {
+    const usuario = await Usuario.findOne({
+      where: { id: req.usuario_id },
+    });
 
-      const id_usuario = usuario.id;
-      const id_lista = req.params.id;
-  
-      const tarea_proyecto = await Tarea_Proyecto.findOne({
+    const id_usuario = usuario.id;
+    const id_lista = req.params.id;
+
+    const tarea_proyecto = await Tarea_Proyecto.findOne({
+      where: { id_lista: id_lista, id_usuario: id_usuario },
+    });
+
+    if (tarea_proyecto) {
+      const deleteTareaProyecto = await Tarea_Proyecto.destroy({
         where: { id_lista: id_lista, id_usuario: id_usuario },
       });
-  
-      if (tarea_proyecto) {
-        const deleteTareaProyecto = await Tarea_Proyecto.destroy({
-          where: { id_lista: id_lista, id_usuario: id_usuario },
+
+      if (deleteTareaProyecto == 1) {
+        const deleteProyecto = await Lista.destroy({
+          where: { id: id_lista },
         });
-  
-        if (deleteTareaProyecto == 1) {
-          const deleteProyecto = await Lista.destroy({
-            where: { id: id_lista },
-          });
-          return sendSuccsessResponse(res, 200, {
-            message: "Listas eliminada",
-          });
-        }
-      } else {
-        sendErrorResponse(
-          res,
-          400,
-          `No se puede eliminar la lista, No tienes el permiso necesario`,
-          tarea_proyecto
-        );
+        return sendSuccsessResponse(res, 200, {
+          message: "Listas eliminada",
+        });
       }
-    } catch (error) {
-      return sendErrorResponse(
+    } else {
+      sendErrorResponse(
         res,
-        500,
-        "No se puede eliminar la lista",
-        error
+        400,
+        `No se puede eliminar la lista, No tienes el permiso necesario`,
+        tarea_proyecto
       );
     }
-  };
+  } catch (error) {
+    return sendErrorResponse(res, 500, "No se puede eliminar la lista", error);
+  }
+};
 module.exports = tareaController;
