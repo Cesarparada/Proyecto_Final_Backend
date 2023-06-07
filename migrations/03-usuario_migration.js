@@ -23,7 +23,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       fecha_de_nacimiento: {
-        type: Sequelize.DATE
+        type: Sequelize.DATEONLY
       },
       email: {
         type: Sequelize.STRING

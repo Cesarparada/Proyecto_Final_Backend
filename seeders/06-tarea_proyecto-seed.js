@@ -41,36 +41,7 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date(),
         },
-        {
-          id_lista: 1,
-          id_usuario: 6,
-          id_proyecto: 1,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-        {
-          id_lista: 2,
-          id_usuario: 7,
-          id_proyecto: 2,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-        {
-          id_lista: 2,
-          id_usuario: 8,
-          id_proyecto: 2,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-        {
-          id_lista: 1,
-          id_usuario: 9,
-          id_proyecto: 1,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
       ],
-      {}
     );
   },
 
