@@ -8,6 +8,10 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Contacto.belongsTo(models.Usuario, {
         foreignKey: "id_usuario",
+      })
+
+      Contacto.hasMany(models.Lista,{
+        foreignKey:"id_contacto",
       });
     }
   }
