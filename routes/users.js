@@ -15,4 +15,5 @@ router.get("/getprofile", verifyToken, userController.getProfile);
 //modificar usuario
 router.put("/updateprofile", verifyToken, userController.updateProfile);
 
+router.get("/verContactos/:id", verifyToken, userController.misContactos);
 module.exports = router;

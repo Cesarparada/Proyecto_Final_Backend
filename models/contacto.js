@@ -10,9 +10,13 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "id_usuario",
       })
 
-      Contacto.hasMany(models.Lista,{
+      Contacto.belongsToMany(models.Lista,{
+        through:"listas",
         foreignKey:"id_contacto",
       });
+      // Contacto.hasMany(models.Lista,{
+      //   foreignKey:"id_contacto",
+      // });
     }
   }
   Contacto.init(

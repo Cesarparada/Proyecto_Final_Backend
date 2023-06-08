@@ -49,11 +49,11 @@ proyectoController.getProyectos = async (req, res) => {
 
     const proyecto = await Usuario_Proyecto.findAll({
       where: { id_usuario: usuario.id },
-      attributes: { exclude: ["createdAt", "updatedAt"] },
+      attributes: { exclude: ["createdAt", "updatedAt", "id_usuario","id"] },
       include: {
         model: Proyecto,
         attributes: {
-          exclude: ["createdAt", "updatedAt"],
+          exclude: ["createdAt", "updatedAt","id"],
         },
       },
     });
