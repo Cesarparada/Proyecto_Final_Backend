@@ -37,12 +37,11 @@ module.exports = {
         {
           titulo: "Diseño del proyecto",
           descripcion:
-            "lista de tareas para el diseño para la entrega del domingo 15",
+            "lista de tareas para la entrega del diseño del domingo 15",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
       ],
-      {}
     );
   },
 

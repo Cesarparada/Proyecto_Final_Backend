@@ -10,10 +10,10 @@ const isAdmin = require("../middleware/isAdmin");
 router.get("/", verifyToken, isAdmin, userController.getAllUser);
 
 // visualizar el perfil de usuario
-router.get("/getprofile", verifyToken, userController.getProfile);
+router.get("/get-profile", verifyToken, userController.getProfile);
 
 //modificar usuario
-router.put("/updateprofile", verifyToken, userController.updateProfile);
+router.put("/update-profile", verifyToken, userController.updateProfile);
 
-router.get("/verContactos/:id", verifyToken, userController.misContactos);
+router.get("/lista-tarea-proyecto/:id", verifyToken, userController.listaTareaProyecto);
 module.exports = router;

@@ -1,18 +1,15 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Contacto extends Model {
-    
     static associate(models) {
       Contacto.belongsTo(models.Usuario, {
         foreignKey: "id_usuario",
-      })
+      });
 
-      Contacto.belongsToMany(models.Lista,{
-        through:"listas",
-        foreignKey:"id_contacto",
+      Contacto.belongsToMany(models.Lista, {
+        through: "listas",
+        foreignKey: "id_contacto",
       });
       // Contacto.hasMany(models.Lista,{
       //   foreignKey:"id_contacto",
@@ -21,30 +18,32 @@ module.exports = (sequelize, DataTypes) => {
   }
   Contacto.init(
     {
-    id_usuario: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    nombre: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        is:/^[a-zA-Z]+(([',.-][a-zA-Z ])?[a-zA-Z]*)*$/,
+      id_usuario: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      nombre: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          is: /^[a-zA-Z]+(([',.-][a-zA-Z ])?[a-zA-Z]*)*$/,
+        },
+      },
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+        validate: {
+          isEmail: true,
+          isLowercase: true,
+        },
       },
     },
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique:true,
-      validate: {
-        isEmail: true,
-        isLowercase: true,
-      },
-    },
-  }, {
-    sequelize,
-    modelName: 'Contacto',
-    tableName: "contactos"
-  });
+    {
+      sequelize,
+      modelName: "Contacto",
+      tableName: "contactos",
+    }
+  );
   return Contacto;
 };

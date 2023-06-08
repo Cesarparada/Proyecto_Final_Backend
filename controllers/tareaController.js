@@ -10,7 +10,7 @@ const {
   sendErrorResponse,
 } = require("../_util/sendResponse");
 
-// crear tareas como usuario
+// constrolador para crear tareas dentro de tu proyecto
 tareaController.createTarea = async (req, res) => {
   try {
     const usuario = await Usuario.findOne({
@@ -42,7 +42,10 @@ tareaController.createTarea = async (req, res) => {
         updatedAt: new Date(),
       });
 
-      return sendSuccsessResponse(res, 200, { message: "tarea creada",nueva_tarea: nuevaTarea });
+      return sendSuccsessResponse(res, 200, {
+        message: "tarea creada",
+        nueva_tarea: nuevaTarea,
+      });
     } else {
       return sendErrorResponse(res, 403, "No tiene los permisos necesario");
     }
@@ -51,7 +54,7 @@ tareaController.createTarea = async (req, res) => {
   }
 };
 
-//ver mis tareas asignadas
+//controlador para ver mis tareas asignadas
 tareaController.getTareas = async (req, res) => {
   try {
     const usuario = await Usuario.findOne({
@@ -61,7 +64,6 @@ tareaController.getTareas = async (req, res) => {
     const tarea = await Lista.findAll({
       where: { id_contacto: usuario.id },
       attributes: { exclude: ["createdAt", "updatedAt"] },
-     
     });
 
     if (tarea == 0) {
@@ -77,7 +79,7 @@ tareaController.getTareas = async (req, res) => {
   }
 };
 
-// modificar tareas como usuario
+// controlador para modificar tareas dentro de tu proyecto
 tareaController.updateTarea = async (req, res) => {
   try {
     const usuario = await Usuario.findOne({
@@ -118,7 +120,7 @@ tareaController.updateTarea = async (req, res) => {
   }
 };
 
-//Eliminar tarea como usuario
+// controlador para eliminar tarea dentro de mi proyecto
 tareaController.deleteTarea = async (req, res) => {
   try {
     const usuario = await Usuario.findOne({

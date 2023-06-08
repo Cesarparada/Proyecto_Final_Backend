@@ -5,15 +5,15 @@ const isUser = require("../middleware/isUser");
 const proyectoController = require("../controllers/proyectoControllers")
 
 //crear proyectos
-router.post("/createproyecto", verifyToken, isUser, proyectoController.createProyecto);
+router.post("/create-proyecto", verifyToken, isUser, proyectoController.createProyecto);
 
 //ver proyectos como usuario
 router.get("/proyecto", verifyToken, isUser, proyectoController.getProyectos);
 
 //modificar proyectos
-router.put("/updateproyectos/:id", verifyToken, isUser, proyectoController.updateProyecto);
+router.put("/update-proyectos/:id", verifyToken, isUser, proyectoController.updateProyecto);
 
 //eliminar proyectos
-router.delete("/deleteproyectos/:id", verifyToken, isUser, proyectoController.deleteProyecto);
+router.delete("/delete-proyectos/:id", verifyToken, isUser, proyectoController.deleteProyecto);
 
 module.exports = router;

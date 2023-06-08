@@ -12,7 +12,7 @@ const {
   sendErrorResponse,
 } = require("../_util/sendResponse");
 
-//Ver todos los usuarios
+//controlador para ver todos los usuarios --- COMO ADMIN --
 userController.getAllUser = async (req, res) => {
   let { page } = req.query;
   LIMIT = 3;
@@ -39,7 +39,7 @@ userController.getAllUser = async (req, res) => {
   }
 };
 
-//ver los perfiles de usuarios
+//controlador para ver tu perfil de usuario
 userController.getProfile = async (req, res) => {
   try {
     const { usuario_id } = req;
@@ -55,7 +55,7 @@ userController.getProfile = async (req, res) => {
   }
 };
 
-//modificar un perfil
+//controlador para modificar tu perfil
 userController.updateProfile = async (req, res) => {
   try {
     const id_usuario = req.usuario_id;
@@ -74,7 +74,7 @@ userController.updateProfile = async (req, res) => {
     if (updateProfile == 1) {
       return sendSuccsessResponse(res, 200, {
         success: true,
-        message: "Usuario modificado",
+        message: "Perfil modificado",
       });
     } else {
       return sendErrorResponse(res, 400, "Usuario no encontrado");
@@ -83,15 +83,19 @@ userController.updateProfile = async (req, res) => {
     return sendErrorResponse(res, 500, "Error al actualizar el perfil", error);
   }
 };
-userController.misContactos = async (req, res) => {
+
+//controlador para ver todas las listas de tareas de un proyecto con o sin contacto asosiado
+userController.listaTareaProyecto = async (req, res) => {
   try {
     const usuario = await Usuario.findOne({
       where: { id: req.usuario_id },
     });
     const id_proyecto = req.params.id;
-    const contactoLista = await Tarea_Proyecto.findAll({
+    const listas_proyecto = await Tarea_Proyecto.findAll({
       where: { id_usuario: usuario.id, id_proyecto: id_proyecto },
-      attributes: { exclude: ["createdAt", "updatedAt", "id", "id_usuario", "id_lista"] },
+      attributes: {
+        exclude: ["createdAt", "updatedAt", "id", "id_usuario", "id_lista"],
+      },
       include: {
         model: Lista,
         attributes: {
@@ -106,16 +110,25 @@ userController.misContactos = async (req, res) => {
       },
     });
 
-    if (contactoLista == 0) {
-      return sendErrorResponse(res, 404, "No tienes contactos");
+    if (listas_proyecto == 0) {
+      return sendErrorResponse(
+        res,
+        404,
+        "Este proyecto no tiene lista de tareas"
+      );
     } else {
       return sendSuccsessResponse(res, 200, {
         message: "Estas son las tareas y contactos asignados al proyecto",
-        Contactos: contactoLista,
+        Listas_proyecto: listas_proyecto,
       });
     }
   } catch (error) {
-    return sendErrorResponse(res, 500, "Failed to retrive contacts", error);
+    return sendErrorResponse(
+      res,
+      500,
+      "Error al recuperar lista de tareas",
+      error
+    );
   }
 };
 

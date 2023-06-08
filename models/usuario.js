@@ -1,35 +1,29 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Usuario extends Model {
-   
     static associate(models) {
-      
-      Usuario.hasMany(models.Contacto,{
+      Usuario.hasMany(models.Contacto, {
         foreignKey: "id_usuario",
       });
-      Usuario.hasMany(models.Tarea_Proyecto,{
+      Usuario.hasMany(models.Tarea_Proyecto, {
         foreignKey: "id_usuario",
       });
-      Usuario.hasMany(models.Usuario_Proyecto,{
+      Usuario.hasMany(models.Usuario_Proyecto, {
         foreignKey: "id_usuario",
       });
       Usuario.belongsToMany(models.Contacto, {
         through: "listas",
-        foreignKey: "id_usuario"
-      })
+        foreignKey: "id_usuario",
+      });
       Usuario.belongsTo(models.Role, {
         foreignKey: "id_role",
       });
-
-      
     }
   }
-  Usuario.init({
-
-     id_role: {
+  Usuario.init(
+    {
+      id_role: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
@@ -37,14 +31,14 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          is:/^[a-zA-Z]+(([',.-][a-zA-Z ])?[a-zA-Z]*)*$/,
+          is: /^[a-zA-Z]+(([',.-][a-zA-Z ])?[a-zA-Z]*)*$/,
         },
       },
       apellidos: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          is:/^[a-zA-Z]+(([',.-][a-zA-Z ])?[a-zA-Z]*)*$/,
+          is: /^[a-zA-Z]+(([',.-][a-zA-Z ])?[a-zA-Z]*)*$/,
         },
       },
       fecha_de_nacimiento: {
@@ -58,7 +52,7 @@ module.exports = (sequelize, DataTypes) => {
       email: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique:true,
+        unique: true,
         validate: {
           isEmail: true,
           isLowercase: true,
@@ -68,13 +62,15 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          min: 8
+          min: 8,
         },
       },
-  }, {
-    sequelize,
-    modelName: 'Usuario',
-    tableName: "usuarios"
-  });
+    },
+    {
+      sequelize,
+      modelName: "Usuario",
+      tableName: "usuarios",
+    }
+  );
   return Usuario;
 };

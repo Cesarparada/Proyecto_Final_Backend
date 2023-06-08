@@ -22,20 +22,19 @@ module.exports = {
         },
         {
           id_usuario: 8,
-          nombre:   "juan",
+          nombre: "juan",
           email: "juan@correo.com",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           id_usuario: 9,
-          nombre:"Pepe",
+          nombre: "Pepe",
           email: "pepe@correo.com",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
       ],
-      {}
     );
   },
 

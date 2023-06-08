@@ -107,7 +107,6 @@ module.exports = {
           id_role: 2,
         },
       ],
-      {}
     );
   },
 

@@ -8,12 +8,12 @@ const tareaController = require("../controllers/tareaController")
 router.get("/tarea", verifyToken, isUser, tareaController.getTareas);
 
 //Crear tareas
-router.post("/cratetarea/:id", verifyToken, isUser, tareaController.createTarea);
+router.post("/crate-tarea/:id", verifyToken, isUser, tareaController.createTarea);
 
 //modificar tareas
-router.put("/updatetareas/:id", verifyToken, isUser, tareaController.updateTarea);
+router.put("/update-tareas/:id", verifyToken, isUser, tareaController.updateTarea);
 
 //eliminar tareas
-router.delete("/deletetareas/:id", verifyToken, isUser, tareaController.deleteTarea);
+router.delete("/delete-tareas/:id", verifyToken, isUser, tareaController.deleteTarea);
 
 module.exports = router

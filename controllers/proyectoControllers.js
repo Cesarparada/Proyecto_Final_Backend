@@ -11,21 +11,21 @@ const {
   sendErrorResponse,
 } = require("../_util/sendResponse");
 
-// crear proyectos como usuario
+// controlador para crear proyectos como usuario
 proyectoController.createProyecto = async (req, res) => {
   try {
     const usuario = await Usuario.findOne({
       where: { id: req.usuario_id },
     });
     const { titulo, descripcion } = req.body;
-    const nuevoProyecto = await Proyecto.create({
+    const nuevo_proyecto = await Proyecto.create({
       titulo: titulo,
       descripcion: descripcion,
       createdAt: new Date(),
       updatedAt: new Date(),
     });
     const usuario_proyecto = await Usuario_Proyecto.create({
-      id_proyecto: nuevoProyecto.id,
+      id_proyecto: nuevo_proyecto.id,
       id_usuario: usuario.id,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -33,14 +33,14 @@ proyectoController.createProyecto = async (req, res) => {
 
     return sendSuccsessResponse(res, 200, {
       message: "Proyecto creado",
-      nuevoProyecto,
+      nuevo_proyecto,
     });
   } catch (error) {
     return sendErrorResponse(res, 500, "No se puede crear el proyecto", error);
   }
 };
 
-// ver proyectos como usuario
+//controlador para ver proyectos como creador
 proyectoController.getProyectos = async (req, res) => {
   try {
     const usuario = await Usuario.findOne({
@@ -49,17 +49,17 @@ proyectoController.getProyectos = async (req, res) => {
 
     const proyecto = await Usuario_Proyecto.findAll({
       where: { id_usuario: usuario.id },
-      attributes: { exclude: ["createdAt", "updatedAt", "id_usuario","id"] },
+      attributes: { exclude: ["createdAt", "updatedAt", "id_usuario", "id"] },
       include: {
         model: Proyecto,
         attributes: {
-          exclude: ["createdAt", "updatedAt","id"],
+          exclude: ["createdAt", "updatedAt", "id"],
         },
       },
     });
 
     if (proyecto == 0) {
-      return sendErrorResponse(res, 404, "No tiene Proyectos");
+      return sendErrorResponse(res, 404, "No tienes Proyectos creados");
     } else {
       return sendSuccsessResponse(res, 200, {
         message: "Estos son sus proyectos",
@@ -71,7 +71,7 @@ proyectoController.getProyectos = async (req, res) => {
   }
 };
 
-// modificar proyecto como usuario
+// controlodar para modificar tus proyectos
 proyectoController.updateProyecto = async (req, res) => {
   try {
     const usuario = await Usuario.findOne({
@@ -92,15 +92,8 @@ proyectoController.updateProyecto = async (req, res) => {
       );
       if (updateProyecto == 1) {
         return sendSuccsessResponse(res, 200, {
-          message: "proyecto modificado",
-          updateProyecto,
+          message: "Proyecto modificado",
         });
-      } else {
-        return sendErrorResponse(
-          res,
-          404,
-          "Debe completar correctamente los campos requeridos"
-        );
       }
     } else {
       return sendErrorResponse(
@@ -119,7 +112,7 @@ proyectoController.updateProyecto = async (req, res) => {
   }
 };
 
-//Eliminar proyectos como usuario
+//controlador para eliminar tus proyectos
 proyectoController.deleteProyecto = async (req, res) => {
   try {
     const usuario = await Usuario.findOne({
@@ -175,8 +168,7 @@ proyectoController.deleteProyecto = async (req, res) => {
       sendErrorResponse(
         res,
         400,
-        `No se puede eliminar el proyecto, no tienes los permisos necesarios`,
-        tarea_proyecto
+        `No se puede eliminar el proyecto, no tienes los permisos necesarios`
       );
     }
   } catch (error) {
