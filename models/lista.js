@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     id_contacto:{
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
     },
     titulo:{ 
       type:DataTypes.STRING},

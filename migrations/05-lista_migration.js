@@ -18,7 +18,7 @@ module.exports = {
         }},
       id_contacto: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
           model: "contactos",
           key: "id"
