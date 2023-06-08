@@ -24,7 +24,7 @@ tareaController.createTarea = async (req, res) => {
     if (usarioProyecto) {
       const { titulo, descripcion, tarea, id_contacto } = req.body;
       const nuevaTarea = await Lista.create({
-        where: { id: usuario.id, id_proyecto: id_proyecto },
+        where: { id_creador: usuario.id },
         id_creador: usuario.id,
         id_contacto: id_contacto,
         titulo: titulo,
@@ -42,7 +42,7 @@ tareaController.createTarea = async (req, res) => {
         updatedAt: new Date(),
       });
 
-      return sendSuccsessResponse(res, 200, { message: "tarea creada" });
+      return sendSuccsessResponse(res, 200, { message: "tarea creada",nueva_tarea: nuevaTarea });
     } else {
       return sendErrorResponse(res, 403, "No tiene los permisos necesario");
     }
@@ -51,22 +51,17 @@ tareaController.createTarea = async (req, res) => {
   }
 };
 
-//ver tareas como usuario
+//ver mis tareas asignadas
 tareaController.getTareas = async (req, res) => {
   try {
     const usuario = await Usuario.findOne({
       where: { id: req.usuario_id },
     });
 
-    const tarea = await Tarea_Proyecto.findAll({
-      where: { id_usuario: usuario.id },
+    const tarea = await Lista.findAll({
+      where: { id_contacto: usuario.id },
       attributes: { exclude: ["createdAt", "updatedAt"] },
-      include: {
-        model: Lista,
-        attributes: {
-          exclude: ["createdAt", "updatedAt"],
-        },
-      },
+     
     });
 
     if (tarea == 0) {
