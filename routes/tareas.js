@@ -4,7 +4,7 @@ const verifyToken = require("../middleware/verifyToken");
 const isUser = require("../middleware/isUser");
 const tareaController = require("../controllers/tareaController")
 
-//ver proyectos como usuario
+//ver tareas como usuario
 router.get("/tarea", verifyToken, isUser, tareaController.getTareas);
 
 //Crear tareas
